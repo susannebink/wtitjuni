@@ -2,19 +2,82 @@
 	button{
  		background-color: red;
 	}
+	td{
+		border: 2px solid black;
+		width:30px;
+		height:30px;
+	}
+	td:hover{
+  		border: 2px solid blue;
+	}
 </style>
 <script>
 	function mijnfunctie(){
 		var mijnnaam = document.getElementById("naam").value;
 		alert("Hallo " + mijnnaam);
 	}
+	function vulvakje(id){
+		var vakje = document.getElementById(id);
+		vakje.style.background = "red";
+		vakje.style.border = "red";
+}
 </script>
-Geef uw naam:
-<input type=text id="naam"> 
-<button type=button onclick="mijnfunctie()"> Submit </button>
 
-Hoi we gaan beginnen
-<b> hier staat tekst </b>
-hier staat ook iets
+<table>
+	<tr>
+		<td onclick="vulvakje(id)" id="v00"> </td>
+		<td onclick="vulvakje(id)" id="v01"> </td>
+		<td onclick="vulvakje(id)" id="v02"> </td>
+		<td onclick="vulvakje(id)" id="v03"> </td>
+		<td onclick="vulvakje(id)" id="v04"> </td>
+		<td onclick="vulvakje(id)" id="v05"> </td>
+		<td onclick="vulvakje(id)" id="v06"> </td>
 
-<textarea cols="44" rows="5" > nog meer tekst </textarea>
+	</tr>
+	<tr>
+		<td onclick="vulvakje(id)" id="v10"> </td>
+		<td onclick="vulvakje(id)" id="v11"> </td>
+		<td onclick="vulvakje(id)" id="v12"> </td>
+		<td onclick="vulvakje(id)" id="v13"> </td>
+		<td onclick="vulvakje(id)" id="v14"> </td>
+		<td onclick="vulvakje(id)" id="v15"> </td>
+		<td onclick="vulvakje(id)" id="v16"> </td>
+	</tr>
+	<tr>
+		<td onclick="vulvakje(id)" id="v20"> </td>
+		<td onclick="vulvakje(id)" id="v21"> </td>
+		<td onclick="vulvakje(id)" id="v32"> </td>
+		<td onclick="vulvakje(id)" id="v23"> </td>
+		<td onclick="vulvakje(id)" id="v24"> </td>
+		<td onclick="vulvakje(id)" id="v25"> </td>
+		<td onclick="vulvakje(id)" id="v26"> </td>
+	</tr>
+	<tr>
+		<td onclick="vulvakje(id)" id="v30"> </td>
+		<td onclick="vulvakje(id)" id="v31"> </td>
+		<td onclick="vulvakje(id)" id="v32"> </td>
+		<td onclick="vulvakje(id)" id="v33"> </td>
+		<td onclick="vulvakje(id)" id="v34"> </td>
+		<td onclick="vulvakje(id)" id="v35"> </td>
+		<td onclick="vulvakje(id)" id="v36"> </td>
+	</tr>
+	<tr>
+		<td onclick="vulvakje(id)" id="v40"> </td>
+		<td onclick="vulvakje(id)" id="v41"> </td>
+		<td onclick="vulvakje(id)" id="v42"> </td>
+		<td onclick="vulvakje(id)" id="v43"> </td>
+		<td onclick="vulvakje(id)" id="v44"> </td>
+		<td onclick="vulvakje(id)" id="v45"> </td>
+		<td onclick="vulvakje(id)" id="v46"> </td>
+	</tr>
+	<tr>
+		<td onclick="vulvakje(id)" id="v50"> </td>
+		<td onclick="vulvakje(id)" id="v51"> </td>
+		<td onclick="vulvakje(id)" id="v52"> </td>
+		<td onclick="vulvakje(id)" id="v53"> </td>
+		<td onclick="vulvakje(id)" id="v54"> </td>
+		<td onclick="vulvakje(id)" id="v55"> </td>
+		<td onclick="vulvakje(id)" id="v56"> </td>
+	</tr>
+
+</table>
