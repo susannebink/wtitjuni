@@ -12,72 +12,125 @@
 	}
 </style>
 <script>
-	var players = []
-	var playColor = ["yellow", "red"]
-	var currentPlayer = 0
+	var players = [];
+	var playColor = ["yellow", "red"];
+	var currentPlayer = 0;
 
+	// Function to fill in a cell
 	function vulvakje(id){
+		// First check if all players are present
 		if(players.length != 2){
-			alert("Please enter two players")
+			alert("Please enter two players");
 		}
 		else{
 			var onderste = 5;
-			var vakjeKleur = document.getElementById(id).style.background
+			var vakjeKleur = document.getElementById(id).style.background;
 			var ondersteVakje = document.getElementById("v"+onderste+id[2]);
+			// Full/coloured boxes can not be overwritten
 			if(vakjeKleur == "red" || vakjeKleur == "yellow"){
 				alert("Please choose an empty cell");
 			}
 			else{
+				// Check which cell in the column is still empty.
 				while(ondersteVakje.style.background == "red" || ondersteVakje.style.background == "yellow"){
 						onderste-=1;
 						ondersteVakje = document.getElementById("v"+onderste+id[2]);
 					}
+				// If cell in empty, the color of the current player will be filled
+				// in the cell and we will switch to the next player's turn.
 				ondersteVakje.style.background = playColor[currentPlayer];
 				ondersteVakje.style.border = playColor[currentPlayer];
 				if(currentPlayer == 0){
 					currentPlayer = 1;
+					document.getElementById("player").innerHTML = "It\'s " + players[currentPlayer]+ "\'s turn";
 				}else{
 					currentPlayer = 0;
+					document.getElementById("player").innerHTML = "It\'s " + players[currentPlayer]+ "\'s turn";
 				}
-				checkWin(ondersteVakje.style.background, onderste);
-				document.getElementById("player").innerHTML = "It\'s " + players[currentPlayer]+ "\'s turn";
+				// Check if after the current move, someone has won.
+				checkWin(ondersteVakje.style.background, onderste, id[2]);
 			}
 		}
 	}
 
-	function checkWin(color, row){
-		var streak = 0;
-			for(j=0; j<=6; j++){
-				var vakje = document.getElementById("v"+row+j).style.background;
-				console.log(vakje)
-				if(vakje != color){
-					streak = 0;
-				}
-				else{
-					streak++;
-				}
-				if(streak == 4){
-					var playerColor = playColor.indexOf(color);
-					var winPlayer = players[playerColor];
-					console.log(winPlayer + " won the game! Thanks for playing!");
-				}
+	function checkHor(color, row){
+		var streakr = 0;
+		// CHeck all colomns in the particular row to see if there are four in a row
+		for(j=0; j<=6; j++){
+			var vakje = document.getElementById("v"+row+j).style.background;
+			// If the streak gets broken by the other color, set streak to 0
+			if(vakje != color){
+				streakr = 0;
 			}
+			// Else, increase steak by one
+			else{streakr++;}
+			// When the streak reaches four, a player has won and the table will be
+			// hidden.
+			if(streakr == 4){
+				var playerColor = playColor.indexOf(color);
+				var winPlayer = players[playerColor];
+				document.getElementById("player").innerHTML = winPlayer + " won the game! Thanks for playing!";
+				document.getElementById("table").style.display = "none";
+			}
+		}
+	}
+	function checkVert(color, column){
+		var streakc = 0;
+		// Check all rows in the particular column to see if there are four in a row
+		for(i=0; i<=5; i++){
+			var vakje = document.getElementById("v"+i+column).style.background;
+			//if the streak get broken  by the other color, set to 0
+			if(vakje != color){
+				streakc = 0;
+			}
+			// Else, increase streak by one
+			else{streakc++;}
+			// When the streak reaches four, a player has won and the table will be
+			// hidden.
+			if(streakc == 4){
+				var playerColor = playColor.indexOf(color);
+				var winPlayer = players[playerColor];
+				document.getElementById("player").innerHTML = winPlayer + " won the game! Thanks for playing!";
+				document.getElementById("table").style.display = "none";
+			}
+		}
+	}
+	// function checkDiag(color, row, column){
+	//
+	// }
+	function checkWin(color, row, column){
+		//Check for both horizonal and vertical wins
+		checkHor(color, row);
+		checkVert(colow, column);
+		// Will later implant diagonal win.
+		//checkDiag(color, row, column)
+	}
+
+	function creatJSON(){
+		// Create json of the game table for local storage
+		var gameTable = new Object();
+		for(i=0; i<=5; i++){
+			for(j=0; j<=6;j++){
+				var cellId = "v"+i+j
+				var color = document.getElementById(cellId).style.background;
+				gameTable[cellId] = color;
+			}
+		}
 	}
 
 	function submitName(id){
+		// Get the name from the form
 		var name = document.getElementById(id.substr(1)).value;
-		if(players.length == 2){
-			alert("Sorry, only two players!");
-		}
-		else{
 			players.push(name);
 			document.getElementById(id.substr(1)).value = "Name player two"
-			if(players.length == 2){
-				document.getElementById(id.substr(1)).style.display = "none";
-				document.getElementById(id).style.display = "none";
-				document.getElementById("player").innerHTML = "It\'s " + players[0]+"\'s turn";
-				alert("Let's start!");
-			}
+		// When two players are present, you can start the game. The one who filled
+		// in his/her name first, may start.
+		if(players.length == 2){
+			document.getElementById(id.substr(1)).style.display = "none";
+			document.getElementById(id).style.display = "none";
+			// Show who's turn it is.
+			document.getElementById("player").innerHTML = "It\'s " + players[0]+"\'s turn";
+			alert("Let's start!");
 		}
 	}
 	// function onHover(id){
@@ -95,7 +148,7 @@
 
 <h3 type="text" display = "none" id="player"> </h3>
 
-<table>
+<table id="table">
 	<tr>
 		<td onclick="vulvakje(id)" id="v00"> </td>
 		<td onclick="vulvakje(id)" id="v01"> </td>
