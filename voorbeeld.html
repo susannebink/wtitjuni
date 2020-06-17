@@ -39,13 +39,29 @@
 				}else{
 					currentPlayer = 0;
 				}
+				checkWin(ondersteVakje.style.background, onderste);
 				document.getElementById("player").innerHTML = "It\'s " + players[currentPlayer]+ "\'s turn";
 			}
 		}
 	}
 
-	function checkWin(){
-		
+	function checkWin(color, row){
+		var streak = 0;
+			for(j=0; j<=6; j++){
+				var vakje = document.getElementById("v"+row+j).style.background;
+				console.log(vakje)
+				if(vakje != color){
+					streak = 0;
+				}
+				else{
+					streak++;
+				}
+				if(streak == 4){
+					var playerColor = playColor.indexOf(color);
+					var winPlayer = players[playerColor];
+					console.log(winPlayer + " won the game! Thanks for playing!");
+				}
+			}
 	}
 
 	function submitName(id){
