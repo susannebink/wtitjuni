@@ -1,27 +1,83 @@
+<html>
+<head>
 <style>
-	button{
- 		background-color: red;
-	}
 	td{
 		border: 2px solid black;
 		width:30px;
 		height:30px;
+		background: white;
 	}
 	td:hover{
   		border: 2px solid blue;
 	}
 </style>
 <script>
-	function mijnfunctie(){
-		var mijnnaam = document.getElementById("naam").value;
-		alert("Hallo " + mijnnaam);
-	}
+	var players = []
+	var playColor = ["yellow", "red"]
+	var currentPlayer = 0
+
 	function vulvakje(id){
-		var vakje = document.getElementById(id);
-		vakje.style.background = "red";
-		vakje.style.border = "red";
-}
+		if(players.length != 2){
+			alert("Please enter two players")
+		}
+		else{
+			var onderste = 5;
+			var vakjeKleur = document.getElementById(id).style.background
+			var ondersteVakje = document.getElementById("v"+onderste+id[2]);
+			if(vakjeKleur == "red" || vakjeKleur == "yellow"){
+				alert("Please choose an empty cell");
+			}
+			else{
+				while(ondersteVakje.style.background == "red" || ondersteVakje.style.background == "yellow"){
+						onderste-=1;
+						ondersteVakje = document.getElementById("v"+onderste+id[2]);
+					}
+				ondersteVakje.style.background = playColor[currentPlayer];
+				ondersteVakje.style.border = playColor[currentPlayer];
+				if(currentPlayer == 0){
+					currentPlayer = 1;
+				}else{
+					currentPlayer = 0;
+				}
+				document.getElementById("player").innerHTML = "It\'s " + players[currentPlayer]+ "\'s turn";
+			}
+		}
+	}
+
+	function checkWin(){
+		
+	}
+
+	function submitName(id){
+		var name = document.getElementById(id.substr(1)).value;
+		if(players.length == 2){
+			alert("Sorry, only two players!");
+		}
+		else{
+			players.push(name);
+			document.getElementById(id.substr(1)).value = "Name player two"
+			if(players.length == 2){
+				document.getElementById(id.substr(1)).style.display = "none";
+				document.getElementById(id).style.display = "none";
+				document.getElementById("player").innerHTML = "It\'s " + players[0]+"\'s turn";
+				alert("Let's start!");
+			}
+		}
+	}
+	// function onHover(id){
+	// 	for(i=0; i<=5; i++){
+	// 		document.getElementById("v"+i+id[2]).style.border = "blue";
+	// 	}
+	//}
 </script>
+</head>
+
+<body>
+<h1> Welcome! </h1><br><br>
+<input type="text" id="name" value="Name player one">
+<button onclick="submitName(id)" id="bname"> Submit</button><br><br>
+
+<h3 type="text" display = "none" id="player"> </h3>
 
 <table>
 	<tr>
@@ -32,7 +88,6 @@
 		<td onclick="vulvakje(id)" id="v04"> </td>
 		<td onclick="vulvakje(id)" id="v05"> </td>
 		<td onclick="vulvakje(id)" id="v06"> </td>
-
 	</tr>
 	<tr>
 		<td onclick="vulvakje(id)" id="v10"> </td>
@@ -46,7 +101,7 @@
 	<tr>
 		<td onclick="vulvakje(id)" id="v20"> </td>
 		<td onclick="vulvakje(id)" id="v21"> </td>
-		<td onclick="vulvakje(id)" id="v32"> </td>
+		<td onclick="vulvakje(id)" id="v22"> </td>
 		<td onclick="vulvakje(id)" id="v23"> </td>
 		<td onclick="vulvakje(id)" id="v24"> </td>
 		<td onclick="vulvakje(id)" id="v25"> </td>
@@ -79,5 +134,6 @@
 		<td onclick="vulvakje(id)" id="v55"> </td>
 		<td onclick="vulvakje(id)" id="v56"> </td>
 	</tr>
-
 </table>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<html>
+<head>
+<style>
+		td{
+			border: 2px solid black;
+			width:30px;
+			height:30px;
+		}
+</style>
+<script>
+	var kleuren = [0, 2, 1, 1, 0, 2]
+	function kleurvakjes(){
+		for(var i=0; i< 6; i++){
+			var vakje = document.getElementById(i);
+			if(kleuren[i] == 0){
+				vakje.style.background = "white";
+			}else if (kleuren[i] == 1) {
+				vakje.style.background = "yellow";
+			}else{
+				vakje.style.background = "red";
+			}
+		}
+	}
+</script>
+</head>
+
+<body>
+<button onclick="kleurvakjes()"> klik hier </button>
+<table>
+	<tr id = "row">
+		<td id=0> </td>
+		<td id=1> </td>
+		<td id=2> </td>
+		<td id=3> </td>
+		<td id=4> </td>
+		<td id=5> </td>
+	</tr>
+
+</table>
+</body>
+</html>
