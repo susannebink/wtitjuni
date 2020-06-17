@@ -39,7 +39,6 @@
 				// If cell in empty, the color of the current player will be filled
 				// in the cell and we will switch to the next player's turn.
 				ondersteVakje.style.background = playColor[currentPlayer];
-				ondersteVakje.style.border = playColor[currentPlayer];
 				if(currentPlayer == 0){
 					currentPlayer = 1;
 					document.getElementById("player").innerHTML = "It\'s " + players[currentPlayer]+ "\'s turn";
@@ -47,6 +46,8 @@
 					currentPlayer = 0;
 					document.getElementById("player").innerHTML = "It\'s " + players[currentPlayer]+ "\'s turn";
 				}
+				localStorage.setItem('turn', currentPlayer);
+				createJSON();
 				// Check if after the current move, someone has won.
 				checkWin(ondersteVakje.style.background, onderste, id[2]);
 			}
@@ -70,7 +71,7 @@
 				var playerColor = playColor.indexOf(color);
 				var winPlayer = players[playerColor];
 				document.getElementById("player").innerHTML = winPlayer + " won the game! Thanks for playing!";
-				document.getElementById("table").style.display = "none";
+				reset();
 			}
 		}
 	}
@@ -91,7 +92,7 @@
 				var playerColor = playColor.indexOf(color);
 				var winPlayer = players[playerColor];
 				document.getElementById("player").innerHTML = winPlayer + " won the game! Thanks for playing!";
-				document.getElementById("table").style.display = "none";
+				reset();
 			}
 		}
 	}
@@ -101,12 +102,12 @@
 	function checkWin(color, row, column){
 		//Check for both horizonal and vertical wins
 		checkHor(color, row);
-		checkVert(colow, column);
+		checkVert(color, column);
 		// Will later implant diagonal win.
 		//checkDiag(color, row, column)
 	}
 
-	function creatJSON(){
+	function createJSON(){
 		// Create json of the game table for local storage
 		var gameTable = new Object();
 		for(i=0; i<=5; i++){
@@ -116,37 +117,73 @@
 				gameTable[cellId] = color;
 			}
 		}
+		localStorage.setItem('table', JSON.stringify(gameTable));
 	}
 
-	function submitName(id){
+	function submitName(){
 		// Get the name from the form
-		var name = document.getElementById(id.substr(1)).value;
+		var name = document.getElementById("name").value;
 			players.push(name);
-			document.getElementById(id.substr(1)).value = "Name player two"
+			document.getElementById("name").value = "Name player two"
 		// When two players are present, you can start the game. The one who filled
 		// in his/her name first, may start.
 		if(players.length == 2){
-			document.getElementById(id.substr(1)).style.display = "none";
-			document.getElementById(id).style.display = "none";
+			localStorage.setItem('players', JSON.stringify(players));
+			localStorage.setItem('turn', 0)
+			createJSON();
+			document.getElementById("name").style.display = "none";
+			document.getElementById("bname").style.display = "none";
 			// Show who's turn it is.
 			document.getElementById("player").innerHTML = "It\'s " + players[0]+"\'s turn";
-			alert("Let's start!");
 		}
 	}
-	// function onHover(id){
-	// 	for(i=0; i<=5; i++){
-	// 		document.getElementById("v"+i+id[2]).style.border = "blue";
-	// 	}
-	//}
+
+	function setTable(table){
+		for (obj in table){
+			document.getElementById(obj).style.background = table[obj];
+		}
+		localStorage.setItem('table', JSON.stringify(table));
+	}
+
+	function reset(){
+		document.getElementById("name").value = "Name player one";
+		document.getElementById("name").style.display = "inline";
+		document.getElementById("bname").style.display = "inline";
+		document.getElementById("player").style.innerHTML = "Please enter two players to play";
+		var emptyTable = new Object();
+		for(i=0; i<=5; i++){
+			for(j=0; j<=6;j++){
+				emptyTable["v"+i+j] = "#ffffff";
+			}
+		setTable(emptyTable);
+		players = [];
+		currentPlayer = 0;
+		localStorage.setItem('players', JSON.stringify(players));
+		localStorage.setItem('turn', currentPlayer)
+		}
+	}
+	function loadGame(){
+		if (JSON.parse(localStorage.players).length==2 && localStorage.table){
+			players = JSON.parse(localStorage.players);
+			currentPlayer = localStorage.turn;
+			var table = JSON.parse(localStorage.table);
+			setTable(table);
+			document.getElementById("player").innerHTML = "It\'s " + players[currentPlayer] + "\'s turn";
+			document.getElementById("name").style.display = "none";
+			document.getElementById("bname").style.display = "none";
+		}
+	}
 </script>
 </head>
 
-<body>
+<body onload="loadGame()">
 <h1> Welcome! </h1><br><br>
 <input type="text" id="name" value="Name player one">
-<button onclick="submitName(id)" id="bname"> Submit</button><br><br>
+<button onclick="submitName()" id="bname"> Submit</button><br><br>
+<button onclick="reset()" id="resetb"> Reset </button> <br><br>
 
-<h3 type="text" display = "none" id="player"> </h3>
+
+<h3 type="text" id="player"> Please enter two players to play </h3>
 
 <table id="table">
 	<tr>
